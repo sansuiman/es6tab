@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #box,#box2{
+            width: 320px;
+            margin:0 auto;
+        }
+
+        input.ac{
+            background:slateblue;
+        }
+        #box div,#box2 div{
+            width:320px;
+            height:280px;
+            border:1px solid #000;
+            display:none;
+        }
+    </style>
+    <script>
+        class Silder {
+            constructor(id){
+                if(!id)return;
+                this.oDiv=document.getElementById(id);
+                this.aBtn=this.oDiv.getElementsByTagName('input');
+                this.aDiv=this.oDiv.getElementsByTagName('div');
+
+                this.init();
+            }
+            init(){
+                var _this=this;
+                for(let i=0;i<this.aBtn.length;i++){
+                    this.aBtn[i].onclick=function(){
+                       this.fnClick(i);
+                    }.bind(this);
+                }
+            }
+            fnClick(index){
+                for(var i=0;i<this.aBtn.length;i++){
+                    this.aBtn[i].className='';
+                    this.aDiv[i].style.display='none';
+                }
+                this.aBtn[index].className='ac';
+                this.aDiv[index].style.display='block';
+            }
+        }
+
+        class SilderAuto extends Silder{
+            constructor(id){
+                super(id);
+                this.iNow=0;
+
+                this.fnAutoPlay();
+            }
+            fnNext(){
+                this.iNow++;
+                this.iNow%=this.aBtn.length;
+                this.fnClick(this.iNow);
+            }
+            fnAutoPlay(){
+                setInterval(function(){
+                    this.fnNext();
+                }.bind(this),500);
+            }
+
+        }
+
+        window.onload=function(){
+            new Silder('box');
+            new SilderAuto('box2');
+        }
+    </script>
+</head>
+<body>
+    <div id="box">
+        <input class="ac" type="button" value="按钮一">
+        <input type="button" value="按钮二">
+        <input type="button" value="按钮三">
+        <div style="display:block;">001</div>
+        <div>002</div>
+        <div>003</div>
+    </div>
+
+    <div id="box2">
+        <input class="ac" type="button" value="按钮一">
+        <input type="button" value="按钮二">
+        <input type="button" value="按钮三">
+        <div style="display:block;">001</div>
+        <div>002</div>
+        <div>003</div>
+    </div>
+</body>
+</html>
